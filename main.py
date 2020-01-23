@@ -21,16 +21,32 @@ _LBL_SIZE = 'size'
 
 def get_all_symbols():
 
-    return pd.DataFrame(pg.get_symbols()).to_html()
+    symbols = pg.get_symbols()
+
+    print(str(type(symbols)))
+
+    return pd.DataFrame(symbols.values).to_html()
 
 
 def get_symbol(ticker):
+
+    if ticker is None:
+        return 'Missing parameter: ticker'
 
     return pg.get_symbol_name(ticker)
 
 
 def get_prices(ticker, interval, size):
 
+    if ticker is None:
+        return 'Missing parameter: ticker'
+
+    if interval is None:
+        return 'Missing parameter: interval'
+
+    if size is None:
+        return 'Missing parameter: size'
+        
     prices = av.get_prices(cfg.AV_APIKEY, ticker, interval, size)
 
     return prices.to_html()
@@ -51,9 +67,13 @@ def process_request(request):
 
         func = request.args.get(_LBL_FUNC)
 
+        print('Invoking function detected: ' + func)
+
         ticker = request.args.get(_LBL_TICKER)
         interval = request.args.get(_LBL_INTERVAL)
         size = request.args.get(_LBL_SIZE)
+
+        print('Parameters detected: ticker=' + ticker + ', interval=' + interval + ', size=' + size)
 
         if func == _VAL_GET_ALL_SYMBOLS:
             get_all_symbols()
