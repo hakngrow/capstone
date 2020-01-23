@@ -3,30 +3,32 @@ import Config as cfg
 import utils.AlphaVantageUtils as av
 
 
-def get_prices(request):
+_LBL_TICKER = 'ticker'
+_LBL_INTERVAL = 'interval'
+
+
+def get_prices(ticker, interval):
+
+    prices = av.get_prices(cfg.AV_APIKEY, ticker, interval, av._SIZE_COMPACT)
+
+    return prices.to_json()
+
+def execute_request(request):
 
     request_json = request.get_json()
 
-    if request.args and 'ticker' in request.args:
+    if request.args and _LBL_TICKER in request.args:
 
-        ticker = request.args.get('ticker')
-        interval = request.args.get('interval')
+        ticker = request.args.get(_LBL_TICKER)
+        interval = request.args.get(_LBL_INTERVAL)
 
-        print(ticker, interval)
+        return get_prices(ticker, interval)
 
-        #prices = av.get_prices(cfg.AV_APIKEY, ticker, interval, av._SIZE_COMPACT )
+    elif request_json and _LBL_TICKER in request_json:
 
-        return ticker + interval
+        ticker = request.args.get(_LBL_TICKER)
+        interval = request.args.get(_LBL_INTERVAL)
 
-    elif request_json and 'ticker' in request_json:
-
-        ticker = request_json['ticker']
-        interval = request_json['interval']
-
-        print(ticker, interval)
-
-        #prices = av.get_prices(cfg.AV_APIKEY, ticker, interval, av._SIZE_COMPACT )
-
-        return ticker + interval
+        return 'In JSON section'
     else:
         return f'Hello World!'
