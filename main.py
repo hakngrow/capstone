@@ -15,7 +15,7 @@ def get_prices(ticker, interval, size):
     return prices.to_dict()
 
 
-def execute_request(request):
+def process_request(request):
 
     request_json = request.get_json()
 
