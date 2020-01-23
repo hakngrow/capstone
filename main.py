@@ -46,7 +46,7 @@ def get_prices(ticker, interval, size):
 
     if size is None:
         return 'Missing parameter: size'
-        
+
     prices = av.get_prices(cfg.AV_APIKEY, ticker, interval, size)
 
     return prices.to_html()
@@ -56,7 +56,7 @@ def update_prices(ticker, interval, size):
 
     created, duplicates = pu.update_price(ticker, interval, size)
 
-    return ticker + ' (' + interval + ') : ' + str(created) + ' created, ' + str(duplicates) + ' duplicates'
+    return f'{ticker} ({interval}) : {str(created)} created, {str(duplicates)} duplicates'
 
 
 def process_request(request):
@@ -67,13 +67,13 @@ def process_request(request):
 
         func = request.args.get(_LBL_FUNC)
 
-        print('Invoking function detected: ' + func)
+        print(f'Invoking function detected: {str(func)}')
 
         ticker = request.args.get(_LBL_TICKER)
         interval = request.args.get(_LBL_INTERVAL)
         size = request.args.get(_LBL_SIZE)
 
-        print('Parameters detected: ticker=' + ticker + ', interval=' + interval + ', size=' + size)
+        print(f'Parameters detected: ticker={str(ticker)}, interval={str(interval)}, size={str(size)}')
 
         if func == _VAL_GET_ALL_SYMBOLS:
             get_all_symbols()
