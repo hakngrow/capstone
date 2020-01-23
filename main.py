@@ -23,7 +23,7 @@ def get_all_symbols():
 
     symbols = pg.get_symbols()
 
-    print(str(type(symbols)))
+    print(len(symbols))
 
     return pd.DataFrame(symbols.values).to_html()
 
@@ -33,9 +33,12 @@ def get_symbol(ticker):
     if ticker is None:
         return 'Missing parameter: ticker'
 
-    name = pg.get_symbol_name(ticker)[0]
+    name = pg.get_symbol_name(ticker)
 
-    return name
+    if name is None:
+        return f'Symbol with ticker {ticker} NOT found!'
+    else:
+        return name[0]
 
 
 def get_prices(ticker, interval, size):
