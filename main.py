@@ -5,7 +5,7 @@ import utils.AlphaVantageUtils as av
 
 def get_prices(request):
 
-    return type(request)
+    return str(type(request))
 
     '''
     request_json = request.get_json()
