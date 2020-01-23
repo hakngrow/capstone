@@ -2,6 +2,7 @@ import Config as cfg
 
 import utils.AlphaVantageUtils as av
 
+
 def get_prices(request):
 
     request_json = request.get_json()
@@ -11,17 +12,21 @@ def get_prices(request):
         ticker = request.args.get('ticker')
         interval = request.args.get('interval')
 
-        prices = av.get_prices(cfg.AV_APIKEY, ticker, interval, av._SIZE_COMPACT )
+        print(ticker, interval)
 
-        return prices
+        #prices = av.get_prices(cfg.AV_APIKEY, ticker, interval, av._SIZE_COMPACT )
+
+        return ticker, interval
 
     elif request_json and 'ticker' in request_json:
 
         ticker = request_json['ticker']
         interval = request_json['interval']
 
-        prices = av.get_prices(cfg.AV_APIKEY, ticker, interval, av._SIZE_COMPACT )
+        print(ticker, interval)
 
-        return prices
+        #prices = av.get_prices(cfg.AV_APIKEY, ticker, interval, av._SIZE_COMPACT )
+
+        return ticker, interval
     else:
         return f'Hello World!'
