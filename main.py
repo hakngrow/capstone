@@ -76,10 +76,10 @@ def process_request(request):
         print(f'Parameters detected: ticker={str(ticker)}, interval={str(interval)}, size={str(size)}')
 
         if func == _VAL_GET_ALL_SYMBOLS:
-            get_all_symbols()
+            return get_all_symbols()
 
         elif func == _VAL_GET_SYMBOL:
-            get_symbol(ticker)
+            return get_symbol(ticker)
 
         elif func == _VAL_GET_PRICES:
             return get_prices(ticker, interval, size)
