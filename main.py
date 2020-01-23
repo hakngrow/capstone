@@ -79,7 +79,7 @@ def process_request(request):
             get_all_symbols()
 
         elif func == _VAL_GET_SYMBOL:
-            get_symbol()
+            get_symbol(ticker)
 
         elif func == _VAL_GET_PRICES:
             return get_prices(ticker, interval, size)
