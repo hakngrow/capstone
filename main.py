@@ -14,7 +14,7 @@ def get_prices(ticker, interval, size):
 
     prices = av.get_prices(cfg.AV_APIKEY, ticker, interval, size)
 
-    return pp.pformat(prices, indent=4)
+    return prices.to_html()
 
 
 def execute_request(request):
