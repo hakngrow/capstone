@@ -1,5 +1,3 @@
-import pprint as pp
-
 import Config as cfg
 
 import utils.AlphaVantageUtils as av
@@ -14,7 +12,7 @@ def get_prices(ticker, interval, size):
 
     prices = av.get_prices(cfg.AV_APIKEY, ticker, interval, size)
 
-    return prices.to_html()
+    return prices.to_dict()
 
 
 def execute_request(request):
