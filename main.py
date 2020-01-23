@@ -5,6 +5,9 @@ import utils.AlphaVantageUtils as av
 
 def get_prices(request):
 
+    return type(request)
+
+    '''
     request_json = request.get_json()
 
     if request.args and 'ticker' in request.args:
@@ -30,3 +33,4 @@ def get_prices(request):
         return ticker, interval
     else:
         return f'Hello World!'
+    '''
