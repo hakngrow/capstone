@@ -11,7 +11,8 @@ _LBL_FUNC = 'func'
 _VAL_GET_PRICES = 'get_prices'
 _VAL_UPDATE_PRICES = 'update_prices'
 
-_VAL_GET_SYMBOLS = 'get_symbols'
+_VAL_GET_ALL_SYMBOLS = 'get_all_symbols'
+_VAL_GET_SYMBOL = 'get_symbol'
 
 _LBL_TICKER = 'ticker'
 _LBL_INTERVAL = 'interval'
@@ -21,6 +22,11 @@ _LBL_SIZE = 'size'
 def get_all_symbols():
 
     return pd.DataFrame(pg.get_symbols()).to_html()
+
+
+def get_symbol(ticker):
+
+    return pg.get_symbol_name(ticker)
 
 
 def get_prices(ticker, interval, size):
@@ -49,8 +55,11 @@ def process_request(request):
         interval = request.args.get(_LBL_INTERVAL)
         size = request.args.get(_LBL_SIZE)
 
-        if func == _VAL_GET_SYMBOLS:
+        if func == _VAL_GET_ALL_SYMBOLS:
             get_all_symbols()
+
+        elif func == _VAL_GET_SYMBOL:
+            get_symbol()
 
         elif func == _VAL_GET_PRICES:
             return get_prices(ticker, interval, size)
