@@ -30,14 +30,10 @@ def get_all_symbols():
 
 def get_symbol(ticker):
 
-    print('In get_symbol')
-
     if ticker is None:
         return 'Missing parameter: ticker'
 
-    name = pg.get_symbol_name(ticker)
-
-    print('symbol name: ' + name)
+    name = pg.get_symbol_name(ticker)[0]
 
     return name
 
