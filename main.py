@@ -34,7 +34,7 @@ def update_prices(ticker, interval, size):
 
     created, duplicates = pu.update_price(ticker, interval, size)
 
-    return ticker + ' ' + interval + ': ' + created + ' created, ' + duplicates + ' duplicates'
+    return ticker + ' ' + interval + ': ' + str(created) + ' created, ' + str(duplicates) + ' duplicates'
 
 
 def process_request(request):
