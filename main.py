@@ -1,3 +1,5 @@
+import pprint as pp
+
 import Config as cfg
 
 import utils.AlphaVantageUtils as av
@@ -5,13 +7,15 @@ import utils.AlphaVantageUtils as av
 
 _LBL_TICKER = 'ticker'
 _LBL_INTERVAL = 'interval'
+_LBL_SIZE = 'size'
 
 
-def get_prices(ticker, interval):
+def get_prices(ticker, interval, size):
 
-    prices = av.get_prices(cfg.AV_APIKEY, ticker, interval, av._SIZE_COMPACT)
+    prices = av.get_prices(cfg.AV_APIKEY, ticker, interval, size)
 
-    return prices.to_json()
+    return pp.pformat(prices, indent=4)
+
 
 def execute_request(request):
 
@@ -21,13 +25,11 @@ def execute_request(request):
 
         ticker = request.args.get(_LBL_TICKER)
         interval = request.args.get(_LBL_INTERVAL)
+        size = request.args.get(_LBL_SIZE)
 
-        return get_prices(ticker, interval)
+        return get_prices(ticker, interval, size)
 
     elif request_json and _LBL_TICKER in request_json:
-
-        ticker = request.args.get(_LBL_TICKER)
-        interval = request.args.get(_LBL_INTERVAL)
 
         return 'In JSON section'
     else:
