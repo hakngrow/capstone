@@ -1,4 +1,4 @@
-import utils.Config as cfg
+import Config as cfg
 
 import utils.AlphaVantageUtils as av
 import utils.PostgresUtils as pg

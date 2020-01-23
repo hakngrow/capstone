@@ -1,15 +1,5 @@
-import numpy as np
-import pandas as pd
-import os
-
-from configparser import SafeConfigParser
-
 from alpha_vantage.timeseries import TimeSeries
-from alpha_vantage.techindicators import TechIndicators
-from alpha_vantage.sectorperformance import SectorPerformances
-from alpha_vantage.cryptocurrencies import CryptoCurrencies
 
-import utils.Config as cfg
 import utils.PostgresUtils as pg
 
 

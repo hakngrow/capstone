@@ -1,11 +1,10 @@
 import pandas as pd
-import datetime as dt
 
 import psycopg2
 
 from psycopg2 import DatabaseError
 
-import utils.Config as cfg
+import Config as cfg
 
 _TBL_PRICES = 'prices'
 _COL_ID = 'id'
