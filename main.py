@@ -1,6 +1,6 @@
 import pandas as pd
 
-import datetime
+import datetime as dt
 
 import Config as cfg
 
@@ -13,12 +13,15 @@ _PARAM_FUNC = 'func'
 _VAL_GET_PRICES = 'get_prices'
 _VAL_UPDATE_PRICES = 'update_prices'
 
+_VAL_GET_FEATURES = 'get_features'
+
 _VAL_GET_ALL_SYMBOLS = 'get_all_symbols'
 _VAL_GET_SYMBOL = 'get_symbol'
 
 _PARAM_TICKER = 'ticker'
 _PARAM_INTERVAL = 'interval'
 _PARAM_SIZE = 'size'
+_PARAM_DATETIME = 'datetime'
 
 
 def get_all_symbols():
@@ -71,9 +74,25 @@ def update_prices(ticker, interval, size):
     return f'{ticker} ({interval}) : {str(created)} created, {str(duplicates)} duplicates'
 
 
-def process_request(request):
+def get_features(ticker, interval, datetime):
 
-    request_json = request.get_json()
+    dt.datetime.strptime(datetime, '%Y-%m-%d %H:%M:%S')
+
+    price_id = pg.get_price_id(ticker, interval, datetime)
+
+    if price_id is None:
+        return f'Prices of {ticker} ({interval}) on {datetime} not found!'
+
+    else:
+        features = pg.get_features(price_id[0])
+
+        if features is None:
+            return f'Features of {ticker} ({interval}) on {datetime} not found!'
+        else:
+            return pd.DataFrame(features).to_html()
+
+
+def process_request(request):
 
     if request.args and _PARAM_FUNC in request.args:
 
@@ -84,8 +103,9 @@ def process_request(request):
         ticker = request.args.get(_PARAM_TICKER)
         interval = request.args.get(_PARAM_INTERVAL)
         size = request.args.get(_PARAM_SIZE)
+        datetime = request.args.get(_PARAM_DATETIME)
 
-        print(f'Parameters detected: ticker={str(ticker)}, interval={str(interval)}, size={str(size)}')
+        print(f'Parameters detected: ticker={str(ticker)}, interval={str(interval)}, size={str(size)}, datetime={datetime}')
 
         if func == _VAL_GET_ALL_SYMBOLS:
             return get_all_symbols()
@@ -98,9 +118,18 @@ def process_request(request):
 
         elif func == _VAL_UPDATE_PRICES:
             return update_prices(ticker, interval, size)
+
+        elif func == _VAL_GET_FEATURES:
+            return get_features(ticker, interval, datetime)
+
         else:
             return f'Unknown function: {str(func)}'
 
     else:
 
-        return f'capsTone version 1.0 built {str(datetime.datetime.now().timestamp())}'
+        return f'capsTone version 1.0 built {str(dt.datetime.now().timestamp())}\n\n' + \
+               'get_symbol: ticker\n' + \
+               'get_all_symbols:\n\n' + \
+               'get_prices: ticker, interval, size\n' + \
+               'update_prices: ticker, interval, datetime\n\n' + \
+               'get_features: ticker, interval, datetime'

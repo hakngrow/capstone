@@ -160,6 +160,31 @@ def get_features(price_id):
     return features
 
 
+def get_features(ticker, interval, datetime):
+
+    price_id = get_price_id(ticker, interval, datetime)
+
+    if price_id is not None:
+
+        sql = 'SELECT * FROM ' + _TBL_FEATURES + ' WHERE ' + _COL_PRICE_ID + '=' + str(price_id)
+
+        try:
+            cursor = get_cursor()
+
+            cursor.execut(sql)
+
+            features = cursor.fetchone()
+
+            cursor.close
+
+        except (Exception, DatabaseError) as error:
+            print(error)
+
+        return features
+
+    return None
+
+
 def create_features(features):
 
     sql = 'INSERT INTO ' + _TBL_FEATURES + '(' + _COL_PRICE_ID + \
@@ -336,6 +361,27 @@ def get_price_dates(ticker, interval, start_date, end_date):
         print(error)
 
     return dates
+
+
+def get_price_id(ticker, interval, datetime):
+
+    sql = 'SELECT ' + _COL_ID + ' FROM ' + _TBL_PRICES + \
+                               ' WHERE ' + _COL_TICKER + '=\'' + ticker + \
+                               '\' AND ' + _COL_INTERVAL + '=\'' + interval + \
+                               '\' AND ' + _COL_DATETIME + '=\'' + str(datetime) + '\''
+    try:
+        cursor = get_cursor()
+
+        cursor.execute(sql)
+
+        id = cursor.fetchone
+
+        cursor.close
+
+    except (Exception, DatabaseError) as error:
+        print(error)
+
+    return id
 
 
 def is_price_duplicate(ticker, interval, datetime):
