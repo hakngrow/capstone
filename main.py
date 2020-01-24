@@ -109,8 +109,6 @@ def get_features(ticker, interval, datetime):
 
     else:
 
-        print(isinstance(price_id, tuple))
-
         features = pg.get_features_by_price_id(price_id)
 
         if features is None:
@@ -154,7 +152,7 @@ def process_request(request):
 
     else:
 
-        return '''
+        return f'''
             capsTone version 1.0 built {str(dt.datetime.now().timestamp())}<br>
             get_symbol: ticker<br>
             get_all_symbols:<br>

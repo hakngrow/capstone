@@ -143,7 +143,7 @@ def create_symbol(ticker, name):
 def get_features_by_price_id(price_id):
 
     sql = 'SELECT * FROM ' + _TBL_FEATURES + \
-                 ' WHERE ' + _COL_PRICE_ID + '=' + price_id
+                 ' WHERE ' + _COL_PRICE_ID + '=' + str(price_id)
 
     try:
         cursor = get_cursor()
