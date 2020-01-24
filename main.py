@@ -69,6 +69,15 @@ def get_prices(ticker, interval, size):
 
 def update_prices(ticker, interval, size):
 
+    if ticker is None:
+        return 'Missing parameter: ticker'
+
+    if interval is None:
+        return 'Missing parameter: interval'
+
+    if size is None:
+        return 'Missing parameter: size'
+
     created, duplicates = pu.update_price(ticker, interval, size)
 
     return f'{ticker} ({interval}) : {str(created)} created, {str(duplicates)} duplicates'
@@ -76,7 +85,22 @@ def update_prices(ticker, interval, size):
 
 def get_features(ticker, interval, datetime):
 
-    dt.datetime.strptime(datetime, '%Y-%m-%d %H:%M:%S')
+    if ticker is None:
+        return 'Missing parameter: ticker'
+
+    if interval is None:
+        return 'Missing parameter: interval'
+
+    if datetime is None:
+        return 'Missing parameter: datetime'
+
+    try:
+
+        datetime = dt.datetime.strptime(datetime, '%Y-%m-%d %H:%M:%S')
+
+    except ValueError as error:
+
+        return str(error)
 
     price_id = pg.get_price_id(ticker, interval, datetime)
 
@@ -127,9 +151,12 @@ def process_request(request):
 
     else:
 
-        return f'capsTone version 1.0 built {str(dt.datetime.now().timestamp())}\n\n' + \
-               'get_symbol: ticker\n' + \
-               'get_all_symbols:\n\n' + \
-               'get_prices: ticker, interval, size\n' + \
-               'update_prices: ticker, interval, datetime\n\n' + \
-               'get_features: ticker, interval, datetime'
+        return
+        '''
+            capsTone version 1.0 built {str(dt.datetime.now().timestamp())}<br>
+            get_symbol: ticker<br>
+            get_all_symbols:<br>
+            get_prices: ticker, interval, size<br>
+            update_prices: ticker, interval, datetime<br>
+            get_features: ticker, interval, datetime<br>
+        '''
