@@ -8,7 +8,8 @@ import utils.AlphaVantageUtils as av
 import utils.PostgresUtils as pg
 import utils.PriceUpdater as pu
 
-_PARAM_FUNC = 'func'
+_LBL_FUNCTION = 'function'
+_LBL_PARAMETERS = 'parameters'
 
 _VAL_GET_PRICES = 'get_prices'
 _VAL_UPDATE_PRICES = 'update_prices'
@@ -18,6 +19,7 @@ _VAL_GET_FEATURES = 'get_features'
 _VAL_GET_ALL_SYMBOLS = 'get_all_symbols'
 _VAL_GET_SYMBOL = 'get_symbol'
 
+_PARAM_FUNC = 'func'
 _PARAM_TICKER = 'ticker'
 _PARAM_INTERVAL = 'interval'
 _PARAM_SIZE = 'size'
@@ -119,6 +121,21 @@ def get_features(ticker, interval, datetime):
             return pd.DataFrame(features).to_html()
 
 
+def get_functions_table():
+
+    df = pd.DataFrame([
+            [_VAL_GET_SYMBOL, _PARAM_TICKER],
+            [_VAL_GET_ALL_SYMBOLS, ''],
+
+            [_VAL_GET_PRICES, _PARAM_TICKER + ', ' + _PARAM_INTERVAL + ', ' + _PARAM_SIZE],
+            [_VAL_UPDATE_PRICES, _PARAM_TICKER + ', ' + _PARAM_INTERVAL + ', ' + _PARAM_SIZE],
+
+            [_VAL_GET_FEATURES, _PARAM_TICKER + ', ' + _PARAM_INTERVAL + ', ' + _PARAM_DATETIME]
+            ], columns=[_LBL_FUNCTION, _LBL_PARAMETERS])
+
+    return df.to_html()
+
+
 def process_request(request):
 
     if request.args and _PARAM_FUNC in request.args:
@@ -154,11 +171,4 @@ def process_request(request):
 
     else:
 
-        return f'''
-            capsTone version 1.0 built {str(dt.datetime.now().timestamp())}<br>
-            get_symbol: ticker<br>
-            get_all_symbols:<br>
-            get_prices: ticker, interval, size<br>
-            update_prices: ticker, interval, datetime<br>
-            get_features: ticker, interval, datetime<br>
-        '''
+        return f'capsTone version 1.0 built {str(dt.datetime.now().timestamp())}<br>' + get_functions_table()
