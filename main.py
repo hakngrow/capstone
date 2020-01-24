@@ -111,9 +111,7 @@ def get_features(ticker, interval, datetime):
 
     else:
 
-        print(str(type(id)))
-
-        features = pg.get_features_by_price_id(price_id)
+        features = pg.get_features_by_price_id(price_id[0])
 
         if features is None:
             return f'Features of {ticker} ({interval}) on {datetime} not found!'
