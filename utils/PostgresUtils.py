@@ -140,7 +140,7 @@ def create_symbol(ticker, name):
         print(error)
 
 
-def get_features(price_id):
+def get_features_by_price_id(price_id):
 
     sql = 'SELECT * FROM ' + _TBL_FEATURES + \
                  ' WHERE ' + _COL_PRICE_ID + '=' + price_id
