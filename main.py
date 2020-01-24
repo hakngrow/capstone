@@ -26,7 +26,11 @@ def get_all_symbols():
     if symbols is None:
         return 'No symbols found!'
     else:
-        return pd.DataFrame(list(symbols)).to_html()
+        df = pd.DataFrame(symbols, columns=[pg._COL_NAME, pg._COL_TICKER])
+
+        print(df.info())
+
+        return df.to_html()
 
 
 def get_symbol(ticker):
