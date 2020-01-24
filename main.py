@@ -108,7 +108,10 @@ def get_features(ticker, interval, datetime):
         return f'Prices of {ticker} ({interval}) on {datetime} not found!'
 
     else:
-        features = pg.get_features(price_id[0])
+
+        print(str(type(price_id)))
+
+        features = pg.get_features(price_id)
 
         if features is None:
             return f'Features of {ticker} ({interval}) on {datetime} not found!'
@@ -151,8 +154,7 @@ def process_request(request):
 
     else:
 
-        return
-        '''
+        return '''
             capsTone version 1.0 built {str(dt.datetime.now().timestamp())}<br>
             get_symbol: ticker<br>
             get_all_symbols:<br>
