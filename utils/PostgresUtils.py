@@ -374,7 +374,7 @@ def get_price_id(ticker, interval, datetime):
 
         cursor.execute(sql)
 
-        id = cursor.fetchone
+        id = cursor.fetchone()
 
         cursor.close
 
