@@ -263,7 +263,7 @@ def get_prices(ticker, interval):
     return df_prices
 
 
-def get_prices_with_features(ticker, interval):
+def get_prices_with_features(ticker, interval, limit):
 
     sql = 'SELECT ' + _TBL_PRICES + '.' + _COL_DATETIME + \
                ', ' + _TBL_PRICES + '.' + _COL_OPEN + \
@@ -290,7 +290,7 @@ def get_prices_with_features(ticker, interval):
              ' ON ' + _TBL_PRICES + '.' + _COL_ID + ' = ' + _TBL_FEATURES + '.' + _COL_PRICE_ID + \
           ' WHERE ' + _COL_TICKER + '=\'' + ticker + \
           '\' AND ' + _COL_INTERVAL + '=\'' + interval + \
-     '\' ORDER BY ' + _COL_DATETIME
+     '\' ORDER BY ' + _COL_DATETIME + ' LIMIT ' + str(limit)
 
     try:
         cursor = get_cursor()

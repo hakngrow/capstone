@@ -12,6 +12,7 @@ _LBL_FUNCTION = 'function'
 _LBL_PARAMETERS = 'parameters'
 
 _VAL_GET_PRICES = 'get_prices'
+_VAL_GET_PRICES_WITH_FEATURES = 'get_prices_features'
 _VAL_UPDATE_PRICES = 'update_prices'
 
 _VAL_GET_FEATURES = 'get_features'
@@ -24,6 +25,7 @@ _PARAM_TICKER = 'ticker'
 _PARAM_INTERVAL = 'interval'
 _PARAM_SIZE = 'size'
 _PARAM_DATETIME = 'datetime'
+_PARAM_LIMIT = 'limit'
 
 
 def get_all_symbols():
@@ -65,6 +67,22 @@ def get_prices(ticker, interval, size):
         return 'Missing parameter: size'
 
     prices = av.get_prices(cfg.AV_APIKEY, ticker, interval, size)
+
+    return prices.to_html()
+
+
+def get_prices_with_features(ticker, interval, limit):
+
+    if ticker is None:
+        return 'Missing parameter: ticker'
+
+    if interval is None:
+        return 'Missing parameter: interval'
+
+    if limit is None:
+        limit = 0
+
+    prices = pg.get_prices_with_features(ticker, interval, limit)
 
     return prices.to_html()
 
@@ -126,6 +144,7 @@ def get_functions_table():
             [_VAL_GET_ALL_SYMBOLS, ''],
 
             [_VAL_GET_PRICES, _PARAM_TICKER + ', ' + _PARAM_INTERVAL + ', ' + _PARAM_SIZE],
+            [_VAL_GET_PRICES_WITH_FEATURES, _PARAM_TICKER + ', ' + _PARAM_INTERVAL + ', ' + _PARAM_LIMIT],
             [_VAL_UPDATE_PRICES, _PARAM_TICKER + ', ' + _PARAM_INTERVAL + ', ' + _PARAM_SIZE],
 
             [_VAL_GET_FEATURES, _PARAM_TICKER + ', ' + _PARAM_INTERVAL + ', ' + _PARAM_DATETIME]
@@ -157,6 +176,9 @@ def process_request(request):
 
         elif func == _VAL_GET_PRICES:
             return get_prices(ticker, interval, size)
+
+        elif func == _VAL_GET_PRICES_WITH_FEATURES:
+            return get_prices_with_features(ticker, interval, size)
 
         elif func == _VAL_UPDATE_PRICES:
             return update_prices(ticker, interval, size)
