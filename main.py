@@ -1,12 +1,14 @@
 import pandas as pd
 
+import datetime
+
 import Config as cfg
 
 import utils.AlphaVantageUtils as av
 import utils.PostgresUtils as pg
 import utils.PriceUpdater as pu
 
-_LBL_FUNC = 'func'
+_PARAM_FUNC = 'func'
 
 _VAL_GET_PRICES = 'get_prices'
 _VAL_UPDATE_PRICES = 'update_prices'
@@ -14,9 +16,9 @@ _VAL_UPDATE_PRICES = 'update_prices'
 _VAL_GET_ALL_SYMBOLS = 'get_all_symbols'
 _VAL_GET_SYMBOL = 'get_symbol'
 
-_LBL_TICKER = 'ticker'
-_LBL_INTERVAL = 'interval'
-_LBL_SIZE = 'size'
+_PARAM_TICKER = 'ticker'
+_PARAM_INTERVAL = 'interval'
+_PARAM_SIZE = 'size'
 
 
 def get_all_symbols():
@@ -73,15 +75,15 @@ def process_request(request):
 
     request_json = request.get_json()
 
-    if request.args and _LBL_FUNC in request.args:
+    if request.args and _PARAM_FUNC in request.args:
 
-        func = request.args.get(_LBL_FUNC)
+        func = request.args.get(_PARAM_FUNC)
 
-        print(f'Invoking function detected: {str(func)}')
+        print(f'Function detected: {str(func)}')
 
-        ticker = request.args.get(_LBL_TICKER)
-        interval = request.args.get(_LBL_INTERVAL)
-        size = request.args.get(_LBL_SIZE)
+        ticker = request.args.get(_PARAM_TICKER)
+        interval = request.args.get(_PARAM_INTERVAL)
+        size = request.args.get(_PARAM_SIZE)
 
         print(f'Parameters detected: ticker={str(ticker)}, interval={str(interval)}, size={str(size)}')
 
@@ -96,9 +98,9 @@ def process_request(request):
 
         elif func == _VAL_UPDATE_PRICES:
             return update_prices(ticker, interval, size)
+        else:
+            return f'Unknown function: {str(func)}'
 
-    elif request_json and _LBL_TICKER in request_json:
-
-        return 'In JSON section'
     else:
-        return f'Hello World!'
+
+        return f'capsTone version 1.0 built {str(datetime.datetime.now().timestamp())}'
