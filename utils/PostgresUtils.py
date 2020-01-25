@@ -163,23 +163,23 @@ def get_features_by_price_id(price_id):
 def get_features_by_datetime(ticker, interval, start_date, end_date):
 
     sql = 'SELECT ' + _TBL_PRICES + '.' + _COL_DATETIME + \
-          ', ' + _TBL_FEATURES + '.' + _COL_YEAR + \
-          ', ' + _TBL_FEATURES + '.' + _COL_MONTH + \
-          ', ' + _TBL_FEATURES + '.' + _COL_DAY + \
-          ', ' + _TBL_FEATURES + '.' + _COL_WK_OF_YR + \
-          ', ' + _TBL_FEATURES + '.' + _COL_DAY_OF_YR + \
-          ', ' + _TBL_FEATURES + '.' + _COL_DAY_OF_WK + \
-          ', ' + _TBL_FEATURES + '.' + _COL_START_OF_YR + \
-          ', ' + _TBL_FEATURES + '.' + _COL_END_OF_YR + \
-          ', ' + _TBL_FEATURES + '.' + _COL_START_OF_QTR + \
-          ', ' + _TBL_FEATURES + '.' + _COL_END_OF_QTR + \
-          ', ' + _TBL_FEATURES + '.' + _COL_START_OF_MTH + \
-          ', ' + _TBL_FEATURES + '.' + _COL_END_OF_MTH + \
-          ', ' + _TBL_FEATURES + '.' + _COL_START_OF_WK + \
-          ', ' + _TBL_FEATURES + '.' + _COL_END_OF_WK + \
-          ' FROM ' + _TBL_PRICES + \
-          ' INNER JOIN ' + _TBL_FEATURES + \
-          ' ON ' + _TBL_PRICES + '.' + _COL_ID + ' = ' + _TBL_FEATURES + '.' + _COL_PRICE_ID + \
+               ', ' + _TBL_FEATURES + '.' + _COL_YEAR + \
+               ', ' + _TBL_FEATURES + '.' + _COL_MONTH + \
+               ', ' + _TBL_FEATURES + '.' + _COL_DAY + \
+               ', ' + _TBL_FEATURES + '.' + _COL_WK_OF_YR + \
+               ', ' + _TBL_FEATURES + '.' + _COL_DAY_OF_YR + \
+               ', ' + _TBL_FEATURES + '.' + _COL_DAY_OF_WK + \
+               ', ' + _TBL_FEATURES + '.' + _COL_START_OF_YR + \
+               ', ' + _TBL_FEATURES + '.' + _COL_END_OF_YR + \
+               ', ' + _TBL_FEATURES + '.' + _COL_START_OF_QTR + \
+               ', ' + _TBL_FEATURES + '.' + _COL_END_OF_QTR + \
+               ', ' + _TBL_FEATURES + '.' + _COL_START_OF_MTH + \
+               ', ' + _TBL_FEATURES + '.' + _COL_END_OF_MTH + \
+               ', ' + _TBL_FEATURES + '.' + _COL_START_OF_WK + \
+               ', ' + _TBL_FEATURES + '.' + _COL_END_OF_WK + \
+           ' FROM ' + _TBL_PRICES + \
+     ' INNER JOIN ' + _TBL_FEATURES + \
+             ' ON ' + _TBL_PRICES + '.' + _COL_ID + ' = ' + _TBL_FEATURES + '.' + _COL_PRICE_ID + \
           ' WHERE ' + _COL_TICKER + '=\'' + ticker + \
           '\' AND ' + _COL_INTERVAL + '=\'' + interval + '\''
 
@@ -194,7 +194,7 @@ def get_features_by_datetime(ticker, interval, start_date, end_date):
 
         cursor.execute(sql)
 
-        df_features = pd.DataFrame(cursor.fetchall(), columns=[_COL_ID, _COL_PRICE_ID,
+        df_features = pd.DataFrame(cursor.fetchall(), columns=[_COL_DATETIME,
                                                                _COL_YEAR, _COL_MONTH, _COL_DAY,
                                                                _COL_WK_OF_YR, _COL_DAY_OF_YR, _COL_DAY_OF_WK,
                                                                _COL_START_OF_YR, _COL_END_OF_YR,
