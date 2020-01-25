@@ -76,6 +76,30 @@ def get_prices_from_alphavantage(ticker, interval, size):
     return prices.to_html()
 
 
+def is_datetime_string(datetime):
+
+    try:
+        dt.datetime.strptime(datetime, '%Y-%m-%d %H:%M')
+
+        return None
+
+    except ValueError as error:
+
+        return str(error)
+
+
+def is_integer_string(number):
+
+    try:
+        int(number)
+
+        return None
+
+    except ValueError as error:
+
+        return str(error)
+
+
 def get_prices_from_database(ticker, interval, start, end, limit):
 
     if ticker is None:
@@ -85,25 +109,31 @@ def get_prices_from_database(ticker, interval, start, end, limit):
         return 'Missing parameter: ' + _PARAM_INTERVAL
 
     if start is not None:
-        try:
-            start = dt.datetime.strptime(start, '%Y-%m-%d %H:%M:%S')
-        except ValueError as error:
-            return str(error)
+        error = is_datetime_string(start)
+
+        if error is not None:
+            return error
     else:
         return 'Missing parameter: ' + _PARAM_START
 
     if end is not None:
-        try:
-            end = dt.datetime.strptime(end, '%Y-%m-%d %H:%M:%S')
-        except ValueError as error:
-            return str(error)
+        error = is_datetime_string(end)
+
+        if error is not None:
+            return error
+
+    if limit is not None:
+        error = is_integer_string(limit)
+
+        if error is not None:
+            return error
 
     prices = pg.get_prices(ticker, interval, start, end, limit)
 
     return prices.to_html()
 
 
-def get_prices_with_features(ticker, interval, limit):
+def get_prices_with_features(ticker, interval, start, end, limit):
 
     if ticker is None:
         return 'Missing parameter: ticker'
@@ -111,8 +141,25 @@ def get_prices_with_features(ticker, interval, limit):
     if interval is None:
         return 'Missing parameter: interval'
 
-    if limit is None:
-        limit = 0
+    if start is not None:
+        error = is_datetime_string(start)
+
+        if error is not None:
+            return error
+    else:
+        return 'Missing parameter: ' + _PARAM_START
+
+    if end is not None:
+        error = is_datetime_string(end)
+
+        if error is not None:
+            return error
+
+    if limit is not None:
+        error = is_integer_string(limit)
+
+        if error is not None:
+            return error
 
     prices = pg.get_prices_with_features(ticker, interval, limit)
 
@@ -148,7 +195,7 @@ def get_features(ticker, interval, datetime):
 
     try:
 
-        datetime = dt.datetime.strptime(datetime, '%Y-%m-%d %H:%M:%S')
+        datetime = dt.datetime.strptime(datetime, '%Y-%m-%d %H:%M')
 
     except ValueError as error:
 
@@ -259,7 +306,7 @@ def handle_database_requests(request):
         elif func == _VAL_GET_PRICES:
             return get_prices_from_database(ticker, interval, start, end, limit)
         elif func == _VAL_GET_PRICES_WITH_FEATURES:
-            return get_prices_with_features(ticker, interval, limit)
+            return get_prices_with_features(ticker, interval, start, end, limit)
         elif func == _VAL_UPDATE_PRICES:
             return update_prices(ticker, interval, size)
 

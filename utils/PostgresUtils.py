@@ -271,7 +271,7 @@ def get_prices(ticker, interval, start_date, end_date, limit):
     return df_prices
 
 
-def get_prices_with_features(ticker, interval, limit):
+def get_prices_with_features(ticker, interval, start_date, end_date, limit):
 
     sql = 'SELECT ' + _TBL_PRICES + '.' + _COL_DATETIME + \
                ', ' + _TBL_PRICES + '.' + _COL_OPEN + \
@@ -297,8 +297,18 @@ def get_prices_with_features(ticker, interval, limit):
      ' INNER JOIN ' + _TBL_FEATURES + \
              ' ON ' + _TBL_PRICES + '.' + _COL_ID + ' = ' + _TBL_FEATURES + '.' + _COL_PRICE_ID + \
           ' WHERE ' + _COL_TICKER + '=\'' + ticker + \
-          '\' AND ' + _COL_INTERVAL + '=\'' + interval + \
-     '\' ORDER BY ' + _COL_DATETIME + ' LIMIT ' + str(limit)
+          '\' AND ' + _COL_INTERVAL + '=\'' + interval + '\''
+
+    if start_date is not None and end_date is not None:
+        sql = sql + ' AND (' + _COL_DATETIME + '>=\'' + str(start_date) + \
+                    '\' AND ' + _COL_DATETIME + '<=\'' + str(end_date) + '\')'
+    elif start_date is not None:
+        sql = sql + ' AND ' + _COL_DATETIME + '=\'' + str(start_date) + '\''
+
+    sql = sql + ' ORDER BY ' + _COL_DATETIME + ' DESC'
+
+    if limit is not None:
+        sql = sql + ' LIMIT ' + limit
 
     try:
         cursor = get_cursor()
