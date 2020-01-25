@@ -196,8 +196,6 @@ def get_features(ticker, interval, start, end):
 
         if error is not None:
             return error
-    else:
-        return 'Missing parameter: ' + _PARAM_START
 
     if end is None:
         error = is_datetime_string(end)
@@ -253,7 +251,7 @@ def get_database_functions_table():
             [_VAL_GET_PRICES, f'{_PARAM_TICKER}, {_PARAM_INTERVAL}, {_PARAM_START}, {_PARAM_END}, {_PARAM_LIMIT}'],
             [_VAL_GET_PRICES_WITH_FEATURES, f'{_PARAM_TICKER}, {_PARAM_INTERVAL}, {_PARAM_START}, {_PARAM_END}, '
                                             f'{_PARAM_LIMIT}'],
-            [_VAL_UPDATE_PRICES, f'{_PARAM_TICKER}, {_PARAM_INTERVAL}, {_PARAM_SIZE}'],
+            [_VAL_UPDATE_PRICES, f'{_PARAM_TICKER}, {_PARAM_INTERVAL}, {_PARAM_START}, {_PARAM_END}'],
 
             [_VAL_GET_FEATURES, f'{_PARAM_TICKER}, {_PARAM_INTERVAL},  {_PARAM_START}, {_PARAM_END}'],
             [_VAL_UPDATE_FEATURES, f'{_PARAM_TICKER}, {_PARAM_INTERVAL},  {_PARAM_START}, {_PARAM_END}']
@@ -295,9 +293,9 @@ def handle_database_requests(request):
             return update_prices(ticker, interval, size)
 
         elif func == _VAL_GET_FEATURES:
-            return get_features(ticker, interval, datetime)
+            return get_features(ticker, interval, start, end)
         elif func == _VAL_UPDATE_FEATURES:
-            return update_features(ticker, interval, datetime)
+            return update_features(ticker, interval, start, end)
 
         else:
             return f'Unknown function: {str(func)}'
