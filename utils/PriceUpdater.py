@@ -15,13 +15,13 @@ def update_price(ticker, interval, size):
 
         if not pg.is_price_duplicate(ticker, interval, df_prices[pg._COL_DATETIME][i]):
 
-            print(ticker + ' price on ' + str(df_prices[pg._COL_DATETIME][i]) + ' created : ', df_prices.iloc[i, :].values)
+            print(f'{ticker} ({interval}) price on {str(df_prices[pg._COL_DATETIME][i])} created : {df_prices.iloc[i, :].values}')
             pg.create_prices([df_prices.iloc[i, :].values])
             count_create += 1
 
         else:
 
-            print('Duplicate ' + ticker + ' price on ' + str(df_prices[pg._COL_DATETIME][i]))
+            print(f'Duplicate {ticker} ({interval}) price on {str(df_prices[pg._COL_DATETIME][i])}')
             count_duplicate += 1
 
     return count_create, count_duplicate

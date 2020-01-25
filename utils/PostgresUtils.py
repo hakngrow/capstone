@@ -160,27 +160,30 @@ def get_features_by_price_id(price_id):
     return features
 
 
-def get_features(ticker, interval, datetime):
+def get_features_by_datetime(ticker, interval, start_date, end_date):
 
-    price_id = get_price_id(ticker, interval, datetime)
+    price_ids = get_price_ids(ticker, interval, start_date, end_date)
 
-    if price_id is not None:
+    sql = 'SELECT * FROM ' + _TBL_FEATURES + ' WHERE ' + _COL_PRICE_ID + '=%s'
 
-        sql = 'SELECT * FROM ' + _TBL_FEATURES + ' WHERE ' + _COL_PRICE_ID + '=' + str(price_id)
+    try:
+        cursor = get_cursor()
 
-        try:
-            cursor = get_cursor()
+        cursor.executemany(sql, price_ids)
 
-            cursor.execut(sql)
+        df_features = pd.DateFrame(cursor.fetchall(), columns=[_COL_ID, _COL_PRICE_ID,
+                                                               _COL_YEAR, _COL_MONTH, _COL_DAY,
+                                                               _COL_WK_OF_YR, _COL_DAY_OF_YR, _COL_DAY_OF_WK,
+                                                               _COL_START_OF_YR, _COL_END_OF_YR,
+                                                               _COL_START_OF_QTR, _COL_END_OF_QTR,
+                                                               _COL_START_OF_MTH, _COL_END_OF_MTH,
+                                                               _COL_START_OF_WK, _COL_END_OF_WK])
+        cursor.close
 
-            features = cursor.fetchone()
+    except (Exception, DatabaseError) as error:
+        print(error)
 
-            cursor.close
-
-        except (Exception, DatabaseError) as error:
-            print(error)
-
-        return features
+    return df_features
 
     return None
 
@@ -315,15 +318,15 @@ def get_prices_with_features(ticker, interval, start_date, end_date, limit):
 
         cursor.execute(sql)
 
-        df_prices = pd.DataFrame( cursor.fetchall(), columns=[_COL_DATETIME,
-                                                              _COL_OPEN, _COL_HIGH, _COL_LOW, _COL_CLOSE,
-                                                              _COL_VOLUME,
-                                                              _COL_YEAR, _COL_MONTH, _COL_DAY,
-                                                              _COL_WK_OF_YR, _COL_DAY_OF_YR, _COL_DAY_OF_WK,
-                                                              _COL_START_OF_YR, _COL_END_OF_YR,
-                                                              _COL_START_OF_QTR, _COL_END_OF_QTR,
-                                                              _COL_START_OF_MTH, _COL_END_OF_MTH,
-                                                              _COL_START_OF_WK, _COL_END_OF_WK])
+        df_prices = pd.DataFrame(cursor.fetchall(), columns=[_COL_DATETIME,
+                                                             _COL_OPEN, _COL_HIGH, _COL_LOW, _COL_CLOSE,
+                                                             _COL_VOLUME,
+                                                             _COL_YEAR, _COL_MONTH, _COL_DAY,
+                                                             _COL_WK_OF_YR, _COL_DAY_OF_YR, _COL_DAY_OF_WK,
+                                                             _COL_START_OF_YR, _COL_END_OF_YR,
+                                                             _COL_START_OF_QTR, _COL_END_OF_QTR,
+                                                             _COL_START_OF_MTH, _COL_END_OF_MTH,
+                                                             _COL_START_OF_WK, _COL_END_OF_WK])
         # df_prices.set_index(_COL_DATETIME, inplace=True)
 
         cursor.close
@@ -342,11 +345,12 @@ def get_price_dates(ticker, interval, start_date, end_date):
                            '\' AND ' + _COL_INTERVAL + '=\'' + interval + '\''
 
     if start_date is not None and end_date is not None:
-
         sql = sql + ' AND (' + _COL_DATETIME + '>=\'' + str(start_date) + \
                     '\' AND ' + _COL_DATETIME + '<=\'' + str(end_date) + '\')'
+    elif start_date is not None:
+        sql = sql + ' AND ' + _COL_DATETIME + '=\'' + str(start_date) + '\''
 
-    sql = sql + ' ORDER BY ' + _COL_DATETIME
+    sql = sql + ' ORDER BY ' + _COL_DATETIME + ' DESC'
 
     try:
         cursor = get_cursor()
@@ -363,25 +367,33 @@ def get_price_dates(ticker, interval, start_date, end_date):
     return dates
 
 
-def get_price_id(ticker, interval, datetime):
+def get_price_ids(ticker, interval, start_date, end_date):
 
     sql = 'SELECT ' + _COL_ID + ' FROM ' + _TBL_PRICES + \
                                ' WHERE ' + _COL_TICKER + '=\'' + ticker + \
-                               '\' AND ' + _COL_INTERVAL + '=\'' + interval + \
-                               '\' AND ' + _COL_DATETIME + '=\'' + str(datetime) + '\''
+                               '\' AND ' + _COL_INTERVAL + '=\'' + interval + '\''
+
+    if start_date is not None and end_date is not None:
+        sql = sql + ' AND (' + _COL_DATETIME + '>=\'' + str(start_date) + \
+                    '\' AND ' + _COL_DATETIME + '<=\'' + str(end_date) + '\')'
+    elif start_date is not None:
+        sql = sql + ' AND ' + _COL_DATETIME + '=\'' + str(start_date) + '\''
+
+    sql = sql + ' ORDER BY ' + _COL_DATETIME + ' DESC'
+
     try:
         cursor = get_cursor()
 
         cursor.execute(sql)
 
-        id = cursor.fetchone()
+        ids = cursor.fetchall()
 
         cursor.close
 
     except (Exception, DatabaseError) as error:
         print(error)
 
-    return id
+    return ids
 
 
 def is_price_duplicate(ticker, interval, datetime):

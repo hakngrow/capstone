@@ -7,6 +7,7 @@ import Config as cfg
 import utils.AlphaVantageUtils as av
 import utils.PostgresUtils as pg
 import utils.PriceUpdater as pu
+import utils.FeaturesUpdater as fu
 
 _VERSION_NO = '1.1'
 
@@ -182,7 +183,7 @@ def update_prices(ticker, interval, size):
     return f'{ticker} ({interval}) : {str(created)} created, {str(duplicates)} duplicates'
 
 
-def get_features(ticker, interval, datetime):
+def get_features(ticker, interval, start, end):
 
     if ticker is None:
         return 'Missing parameter: ' + _PARAM_TICKER
@@ -190,33 +191,26 @@ def get_features(ticker, interval, datetime):
     if interval is None:
         return 'Missing parameter: ' + _PARAM_INTERVAL
 
-    if datetime is None:
-        return 'Missing parameter: ' + _PARAM_DATETIME
+    if start is not None:
+        error = is_datetime_string(start)
 
-    try:
-
-        datetime = dt.datetime.strptime(datetime, '%Y-%m-%d %H:%M')
-
-    except ValueError as error:
-
-        return str(error)
-
-    price_id = pg.get_price_id(ticker, interval, datetime)
-
-    if price_id is None:
-        return f'Prices of {ticker} ({interval}) on {datetime} not found!'
-
+        if error is not None:
+            return error
     else:
+        return 'Missing parameter: ' + _PARAM_START
 
-        features = pg.get_features_by_price_id(price_id[0])
+    if end is None:
+        error = is_datetime_string(end)
 
-        if features is None:
-            return f'Features of {ticker} ({interval}) on {datetime} not found!'
-        else:
-            return pd.DataFrame(features).to_html()
+        if error is not None:
+            return error
+
+    df_features = pg.get_features_by_datetime(ticker, interval, start, end)
+
+    return pd.DataFrame(df_features).to_html()
 
 
-def update_features(ticker, interval, datetime):
+def update_features(ticker, interval, start, end):
 
     if ticker is None:
         return 'Missing parameter: ' + _PARAM_TICKER
@@ -224,30 +218,19 @@ def update_features(ticker, interval, datetime):
     if interval is None:
         return 'Missing parameter: ' + _PARAM_INTERVAL
 
-    if datetime is None:
-        return 'Missing parameter: ' + _PARAM_DATETIME
+    if start is not None:
+        error = is_datetime_string(start)
 
-    try:
+        if error is not None:
+            return error
 
-        datetime = dt.datetime.strptime(datetime, '%Y-%m-%d %H:%M:%S')
+    if end is None:
+        error = is_datetime_string(end)
 
-    except ValueError as error:
+        if error is not None:
+            return error
 
-        return str(error)
-
-    price_id = pg.get_price_id(ticker, interval, datetime)
-
-    if price_id is None:
-        return f'Prices of {ticker} ({interval}) on {datetime} not found!'
-
-    else:
-
-        features = pg.get_features_by_price_id(price_id[0])
-
-        if features is None:
-            return f'Features of {ticker} ({interval}) on {datetime} not found!'
-        else:
-            return pd.DataFrame(features).to_html()
+    fu.update_date_features(ticker, interval, start, end)
 
 
 def get_alphavantage_functions_table():
@@ -268,11 +251,12 @@ def get_database_functions_table():
             [_VAL_GET_ALL_SYMBOLS, ''],
 
             [_VAL_GET_PRICES, f'{_PARAM_TICKER}, {_PARAM_INTERVAL}, {_PARAM_START}, {_PARAM_END}, {_PARAM_LIMIT}'],
-            [_VAL_GET_PRICES_WITH_FEATURES, f'{_PARAM_TICKER}, {_PARAM_INTERVAL}, {_PARAM_LIMIT}'],
+            [_VAL_GET_PRICES_WITH_FEATURES, f'{_PARAM_TICKER}, {_PARAM_INTERVAL}, {_PARAM_START}, {_PARAM_END}, '
+                                            f'{_PARAM_LIMIT}'],
             [_VAL_UPDATE_PRICES, f'{_PARAM_TICKER}, {_PARAM_INTERVAL}, {_PARAM_SIZE}'],
 
-            [_VAL_GET_FEATURES, f'{_PARAM_TICKER}, {_PARAM_INTERVAL}, {_PARAM_DATETIME}'],
-            [_VAL_UPDATE_FEATURES, f'{_PARAM_TICKER}, {_PARAM_INTERVAL}, {_PARAM_DATETIME}']
+            [_VAL_GET_FEATURES, f'{_PARAM_TICKER}, {_PARAM_INTERVAL},  {_PARAM_START}, {_PARAM_END}'],
+            [_VAL_UPDATE_FEATURES, f'{_PARAM_TICKER}, {_PARAM_INTERVAL},  {_PARAM_START}, {_PARAM_END}']
             ], columns=[_LBL_FUNCTION, _LBL_PARAMETERS])
 
     return df.to_html()
