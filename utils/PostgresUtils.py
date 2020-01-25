@@ -261,7 +261,7 @@ def get_prices(ticker, interval, start_date, end_date, limit):
 
         cursor.execute(sql)
 
-        df_prices = pd.DataFrame( cursor.fetchall(), columns=[_COL_DATETIME,
+        df_prices = pd.DataFrame( cursor.fetchall(), columns=[_COL_ID, _COL_TICKER, _COL_INTERVAL, _COL_DATETIME,
                                                               _COL_OPEN, _COL_HIGH, _COL_LOW, _COL_CLOSE, _COL_VOLUME])
         cursor.close
 
