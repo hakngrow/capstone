@@ -161,7 +161,7 @@ def get_prices_with_features(ticker, interval, start, end, limit):
         if error is not None:
             return error
 
-    prices = pg.get_prices_with_features(ticker, interval, limit)
+    prices = pg.get_prices_with_features(ticker, interval, start, end, limit)
 
     return prices.to_html()
 
