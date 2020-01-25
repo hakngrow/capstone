@@ -24,7 +24,7 @@ def update_date_features(ticker, interval, start_date, end_date):
 
             features = fe.get_date_features(price_dates[i][1])
 
-            print(f'{ticker} ({interval}) features on {price_dates[pg._COL_DATETIME][i]} created: {features}')
+            print(f'{ticker} ({interval}) features on {price_dates[i][1]} created: {features}')
 
             features_array.append([price_dates[i][0], \
                                    features[0], features[1], features[2], \
@@ -35,7 +35,7 @@ def update_date_features(ticker, interval, start_date, end_date):
 
         else:
 
-            print(f'Duplicate {ticker} ({interval}) features on {price_dates[pg._COL_DATETIME][i]}')
+            print(f'Duplicate {ticker} ({interval}) features on {price_dates[i][1]}')
             count_duplicate += 1
 
     pg.create_features(features_array)
