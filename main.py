@@ -228,7 +228,9 @@ def update_features(ticker, interval, start, end):
         if error is not None:
             return error
 
-    fu.update_date_features(ticker, interval, start, end)
+    created, duplicates = fu.update_date_features(ticker, interval, start, end)
+
+    return f'{ticker} ({interval}) : {str(created)} created, {str(duplicates)} duplicates'
 
 
 def get_alphavantage_functions_table():
