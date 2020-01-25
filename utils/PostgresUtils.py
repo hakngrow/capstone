@@ -239,22 +239,30 @@ def create_prices(prices):
         print(error)
 
 
-def get_prices(ticker, interval):
+def get_prices(ticker, interval, start_date, end_date, limit):
 
     sql = 'SELECT * FROM ' + _TBL_PRICES + \
                  ' WHERE ' + _COL_TICKER + '=\'' + ticker + \
-                 '\' AND ' + _COL_INTERVAL + '=\'' + interval + \
-            '\' ORDER BY ' + _COL_DATETIME
+                 '\' AND ' + _COL_INTERVAL + '=\'' + interval + '\''
+
+    if start_date is not None and end_date is not None:
+        sql = sql + ' AND (' + _COL_DATETIME + '>=\'' + str(start_date) + \
+                    '\' AND ' + _COL_DATETIME + '<=\'' + str(end_date) + '\')'
+    elif start_date is not None:
+        sql = sql + ' AND ' + _COL_DATETIME + '=\'' + str(start_date) + '\''
+
+    sql = sql + ' ORDER BY ' + _COL_DATETIME + ' DESC'
+
+    if limit is not None:
+        sql = sql + ' LIMIT ' + limit
 
     try:
         cursor = get_cursor()
 
         cursor.execute(sql)
 
-        df_prices = pd.DataFrame( cursor.fetchall(), columns=[_COL_ID, _COL_TICKER, _COL_INTERVAL, _COL_DATETIME,
+        df_prices = pd.DataFrame( cursor.fetchall(), columns=[_COL_DATETIME,
                                                               _COL_OPEN, _COL_HIGH, _COL_LOW, _COL_CLOSE, _COL_VOLUME])
-        # df_prices.set_index(_COL_DATETIME, inplace=True)
-
         cursor.close
 
     except (Exception, DatabaseError) as error:
@@ -316,38 +324,20 @@ def get_prices_with_features(ticker, interval, limit):
     return df_prices
 
 
-def get_price_dates(ticker, interval):
-
-    sql = 'SELECT ' + _COL_ID + ', ' + _COL_DATETIME + \
-                            ' FROM ' + _TBL_PRICES + \
-                           ' WHERE ' + _COL_TICKER + '=\'' + ticker + \
-                           '\' AND ' + _COL_INTERVAL + '=\'' + interval + \
-                      '\' ORDER BY ' + _COL_DATETIME
-
-    try:
-        cursor = get_cursor()
-
-        cursor.execute(sql)
-
-        dates = cursor.fetchall()
-
-        cursor.close
-
-    except (Exception, DatabaseError) as error:
-        print(error)
-
-    return dates
-
-
 def get_price_dates(ticker, interval, start_date, end_date):
 
     sql = 'SELECT ' + _COL_ID + ', ' + _COL_DATETIME + \
                             ' FROM ' + _TBL_PRICES + \
                            ' WHERE ' + _COL_TICKER + '=\'' + ticker + \
-                           '\' AND ' + _COL_INTERVAL + '=\'' + interval + \
-                          '\' AND (' + _COL_DATETIME + '>=\'' + str(start_date) + \
-                           '\' AND ' + _COL_DATETIME + '<=\'' + str(end_date) + \
-                     '\') ORDER BY ' + _COL_DATETIME
+                           '\' AND ' + _COL_INTERVAL + '=\'' + interval + '\''
+
+    if start_date is not None and end_date is not None:
+
+        sql = sql + ' AND (' + _COL_DATETIME + '>=\'' + str(start_date) + \
+                    '\' AND ' + _COL_DATETIME + '<=\'' + str(end_date) + '\')'
+
+    sql = sql + ' ORDER BY ' + _COL_DATETIME
+
     try:
         cursor = get_cursor()
 
