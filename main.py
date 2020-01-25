@@ -197,7 +197,7 @@ def get_features(ticker, interval, start, end):
         if error is not None:
             return error
 
-    if end is None:
+    if end is not None:
         error = is_datetime_string(end)
 
         if error is not None:
@@ -222,7 +222,7 @@ def update_features(ticker, interval, start, end):
         if error is not None:
             return error
 
-    if end is None:
+    if end is not None:
         error = is_datetime_string(end)
 
         if error is not None:
