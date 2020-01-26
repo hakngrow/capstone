@@ -189,6 +189,8 @@ def get_features_by_datetime(ticker, interval, start_date, end_date):
     elif start_date is not None:
         sql = sql + ' AND ' + _COL_DATETIME + '=\'' + str(start_date) + '\''
 
+    sql = sql + ' ORDER BY ' + _COL_DATETIME + ' DESC'
+
     try:
         cursor = get_cursor()
 
