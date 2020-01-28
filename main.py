@@ -2,7 +2,7 @@ import pandas as pd
 
 import datetime as dt
 
-import Config as cfg
+import utils.Config as cfg
 
 import utils.AlphaVantageUtils as av
 import utils.PostgresUtils as pg

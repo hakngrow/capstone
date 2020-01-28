@@ -1,3 +1,4 @@
+MANIFEST.in
 README.md
 setup.py
 alpaca/Pairs_Trading_Algo_Example.py
@@ -9,10 +10,10 @@ charts/FeaturesChart.py
 charts/PricesChart.py
 charts/__init__.py
 charts/streaming.py
-ga_captone_hakngrow.egg-info/PKG-INFO
-ga_captone_hakngrow.egg-info/SOURCES.txt
-ga_captone_hakngrow.egg-info/dependency_links.txt
-ga_captone_hakngrow.egg-info/top_level.txt
+ga_capstone_hakngrow.egg-info/PKG-INFO
+ga_capstone_hakngrow.egg-info/SOURCES.txt
+ga_capstone_hakngrow.egg-info/dependency_links.txt
+ga_capstone_hakngrow.egg-info/top_level.txt
 model/AutoArimaModel.py
 model/BaselineModel.py
 model/FeatureEngineer.py
@@ -25,8 +26,10 @@ model/ProphetModel.py
 model/__init__.py
 polygon/__init__.py
 utils/AlphaVantageUtils.py
+utils/Config.py
 utils/FeaturesUpdater.py
 utils/ModelUtils.py
 utils/PostgresUtils.py
 utils/PriceUpdater.py
 utils/__init__.py
+utils/capstone.ini
