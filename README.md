@@ -66,18 +66,18 @@ This package has been uploaded to GCP's Source Repositories for ease of use with
 ####Python Package Index
 
 This package has been uploaded to the Python Package Index under the title 'ga-capstone-hakngrow'.
-Been on the index, you can install this package using pip. Files particularly important for uploading 
+Being on the index, you can install this package using pip. Files particularly important for uploading 
 to the Index include setup.py, MANIFEST.in, LICENSE, README.md and requirements.txt. For further
 details, refer to [Packaging Python Projects](https://packaging.python.org/tutorials/packaging-projects/).
 
 ###utils Package
 
-Config.py - Stores configuationr data used by this package
-AlphaVantageUtils.py - Interfaces with the AlphaVantage web API to retrieve stock prices 
-PostgresUtils.py - Database functions that interfaces with the GCP Cloud SQL database
-ModelUtils.py - Contains utility functions for use in ML and DL models
-PriceUpdater.py - Utility to update stock prices stored in Cloud SQL
-FeaturesUpdater.py - Utility to update stock price features stored in Cloud SQL  
+- Config.py - Stores configuationr data used by this package
+- AlphaVantageUtils.py - Interfaces with the AlphaVantage web API to retrieve stock prices 
+- PostgresUtils.py - Database functions that interfaces with the GCP Cloud SQL database
+- ModelUtils.py - Contains utility functions for use in ML and DL models
+- PriceUpdater.py - Utility to update stock prices stored in Cloud SQL
+- FeaturesUpdater.py - Utility to update stock price features stored in Cloud SQL  
  
 ###models Package
 
@@ -86,3 +86,7 @@ Contains various scripts using different models to perform price prediction.
 ###strategy Package
 
 Contains scripts to perform strategy testing and back-testing.
+
+###jupyter Folder
+
+Contains Jupyter notebooks for purpose of model engineering and testing.
