@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="ga-capstone-hakngrow", # Replace with your own username
-    version="0.0.4",
+    version="0.0.18",
     author="Howie Ng",
     author_email="hakngrow@gmail.com",
     description="GA Capstone project",

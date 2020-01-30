@@ -12,7 +12,7 @@ import utils.PostgresUtils as pg
 import utils.ModelUtils as mdl
 
 name = pg.get_symbol_name(av._TIC_MICROSOFT)
-df_prices = pg.get_prices_with_features(av._TIC_MICROSOFT, av._INT_DAILY)
+df_prices = pg.get_prices_with_features(av._TIC_MICROSOFT, av._INT_DAILY, None, None, None)
 
 df_prices.drop(columns=['open', 'high', 'low', 'volume'], inplace=True)
 

@@ -1,5 +1,7 @@
 from configparser import ConfigParser
 
+import os
+
 _CFG_FILENAME = 'capstone.ini'
 
 _DB_SECTION = 'database'
@@ -31,9 +33,22 @@ def load_config():
 
     global AV_APIKEY
 
+    DB_HOST = '35.232.238.193'
+    DB_PORT = '5432'
+    DB_NAME = 'capstone'
+    DB_USERNAME ='postgres'
+    DB_PASSWORD = '12341234'
+
+    AV_APIKEY = '4F9G7E51ZEMJ6L2B'
+    '''
     parser = ConfigParser()
 
-    parser.read(_CFG_FILENAME)
+    full_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), _CFG_FILENAME)
+
+    print(__file__)
+    print(full_path)
+
+    parser.read(full_path)
 
     DB_HOST = parser.get(_DB_SECTION, _DB_HOST_OPT)
     DB_PORT = parser.get(_DB_SECTION, _DB_PORT_OPT)
@@ -42,7 +57,7 @@ def load_config():
     DB_PASSWORD = parser.get(_DB_SECTION, _DB_PASSWORD_OPT)
 
     AV_APIKEY = parser.get(_AV_SECTION, _AV_APIKEY_OPT)
-
+    '''
 
 def get_database_items():
 

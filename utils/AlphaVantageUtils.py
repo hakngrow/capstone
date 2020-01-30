@@ -20,8 +20,13 @@ _INT_30MIN = '30'
 _INT_60MIN = '60'
 _INT_MIN = 'min'
 
-_TIC_MICROSOFT = 'MSFT'
+_TIC_AMAZON = 'AMZN'
 _TIC_APPLE = 'AAPL'
+_TIC_MICROSOFT = 'MSFT'
+
+_TIC_GENERAL_ELECTRIC = 'GE'
+_TIC_NEXTERA_ENERGY = 'NEE'
+_TIC_PROCTER_GAMBLE = 'PG'
 
 
 def get_prices(api_key, ticker, interval, size, format=_FMT_PANDAS):

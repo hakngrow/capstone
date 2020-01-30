@@ -4,7 +4,7 @@ import psycopg2
 
 from psycopg2 import DatabaseError
 
-import Config as cfg
+import utils.Config as cfg
 
 _TBL_PRICES = 'prices'
 _COL_ID = 'id'
