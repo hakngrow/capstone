@@ -9,6 +9,8 @@ accuracy.
 This project aims to explore using machine and deep learning techniques, to complement traditional 
 technical analysis, to be the game changer in stock price prediction.
 
+<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vSfH12Ky4XeihdhuOhTtYnTMFmOYcZ884lcXwWASPIuOavc642MMD_ZwzoEK6ivYyT0FRWci3vQrHD9/embed?start=true&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+
 #### Database Design
 
 The database design allows for the efficient storage and manipulation of price and features data.
