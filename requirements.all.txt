@@ -9,7 +9,7 @@ Flask-Compress==1.4.0
 Keras==2.2.4
 Keras-Applications==1.0.8
 Keras-Preprocessing==1.1.0
-numpy==1.18.1
+numpy==1.22.0
 pandas==0.25.3
 plotly==4.4.1
 psycopg2==2.8.4
